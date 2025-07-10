@@ -1,0 +1,13 @@
+<인덱스 사용시>
+-> Index range scan on sales using idx_customer_date over (CustomerID = 17850 AND '2010-12-01 00:00:00' <= InvoiceDate), with index condition: ((sales.CustomerID = 17850) and (sales.InvoiceDate >= TIMESTAMP'2010-12-01 00:00:00'))  (cost=177 rows=312) (actual time=0.0347..1.1 rows=312 loops=1)
+
+
+<인덱스 미사용시>
+-> Filter: ((sales.CustomerID = 17850) and (sales.InvoiceDate >= TIMESTAMP'2010-12-01 00:00:00'))  (cost=41342 rows=13454) (actual time=0.0291..163 rows=312 loops=1)
+    -> Table scan on sales  (cost=41342 rows=403656) (actual time=0.0269..150 rows=406829 loops=1)
+
+row와 cost에서 차이발생.
+
+<like %>
+-> Filter: ((sales.CustomerID like '%17850') and (sales.InvoiceDate >= TIMESTAMP'2010-12-01 00:00:00'))  (cost=41342 rows=14947) (actual time=0.0341..222 rows=312 loops=1)
+    -> Table scan on sales  (cost=41342 rows=403656) (actual time=0.0282..162 rows=406829 loops=1)

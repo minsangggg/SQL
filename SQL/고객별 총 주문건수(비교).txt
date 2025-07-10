@@ -1,0 +1,14 @@
+<SubQuery>
+-> Covering index scan on 고객 using PRIMARY  (cost=9.55 rows=93) (actual time=0.0361..0.0584 rows=93 loops=1)
+-> Select #2 (subquery in projection; dependent)
+    -> Aggregate: count(0)  (cost=17.6 rows=1) (actual time=0.197..0.197 rows=1 loops=93)
+        -> Filter: (`주문`.`고객번호` = `고객`.`고객번호`)  (cost=9.3 rows=83) (actual time=0.0394..0.195 rows=8.92 loops=93)
+            -> Table scan on 주문  (cost=9.3 rows=830) (actual time=0.0115..0.146 rows=830 loops=93)
+
+<Join>
+-> Table scan on <temporary>  (actual time=0.726..0.732 rows=93 loops=1)
+    -> Aggregate using temporary table  (actual time=0.725..0.725 rows=93 loops=1)
+        -> Left hash join (`주문`.`고객번호` = `고객`.`고객번호`)  (cost=7721 rows=77190) (actual time=0.449..0.534 rows=834 loops=1)
+            -> Covering index scan on 고객 using PRIMARY  (cost=9.55 rows=93) (actual time=0.0189..0.0329 rows=93 loops=1)
+            -> Hash
+                -> Table scan on 주문  (cost=0.903 rows=830) (actual time=0.0389..0.23 rows=830 loops=1)
